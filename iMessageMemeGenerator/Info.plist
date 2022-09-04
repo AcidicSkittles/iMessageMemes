@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to access microphone while recording video to be imported into the app for editing and caption making.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.</string>
+</dict>
+</plist>

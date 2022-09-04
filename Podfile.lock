@@ -1,0 +1,46 @@
+PODS:
+  - Alamofire (4.9.1)
+  - FLAnimatedImage (1.0.17)
+  - MASegmentedControl (0.0.5)
+  - Nuke (9.5.0)
+  - Nuke-FLAnimatedImage-Plugin (7.1.0):
+    - FLAnimatedImage (~> 1.0)
+    - Nuke (~> 9.0)
+  - SnapKit (5.6.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.9.0)
+  - FLAnimatedImage (from `https://github.com/Flipboard/FLAnimatedImage.git`)
+  - MASegmentedControl
+  - Nuke
+  - Nuke-FLAnimatedImage-Plugin
+  - SnapKit
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - MASegmentedControl
+    - Nuke
+    - Nuke-FLAnimatedImage-Plugin
+    - SnapKit
+
+EXTERNAL SOURCES:
+  FLAnimatedImage:
+    :git: https://github.com/Flipboard/FLAnimatedImage.git
+
+CHECKOUT OPTIONS:
+  FLAnimatedImage:
+    :commit: d4f07b6f164d53c1212c3e54d6460738b1981e9f
+    :git: https://github.com/Flipboard/FLAnimatedImage.git
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  FLAnimatedImage: bbf914596368867157cc71b38a8ec834b3eeb32b
+  MASegmentedControl: 9b58f9ba3a562a739b63b29e4ca2b9dc4d9c62cb
+  Nuke: 6f400a4ea957e09149ec335a3c6acdcc814d89e4
+  Nuke-FLAnimatedImage-Plugin: d4e97ea8c34d101c3b63f7cc44359acd5022cfe8
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+
+PODFILE CHECKSUM: cd156e2cddfb8721b32b3c393b3fdf9db16e1298
+
+COCOAPODS: 1.11.2

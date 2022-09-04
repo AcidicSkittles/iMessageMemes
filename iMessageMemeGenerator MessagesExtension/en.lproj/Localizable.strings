@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  iMessageMemeGenerator
+
+  Created by Derek Buchanan on 9/1/22.
+  
+*/
+
+"ADD_CAPTION" = "Add Caption!";
+"UNSUPPORTED_FILE" = "Unsupported file type.";

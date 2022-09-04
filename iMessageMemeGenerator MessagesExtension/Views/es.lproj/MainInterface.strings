@@ -1,0 +1,6 @@
+
+/* Class = "UILabel"; text = "Step 1 of 2: Choose Something to Meme"; ObjectID = "QeU-eL-lXu"; */
+"QeU-eL-lXu.text" = "Paso 1 de 2: Elige Algo para Crear un Meme";
+
+/* Class = "UISearchBar"; placeholder = "Search Tenor"; ObjectID = "jvu-Mk-H3f"; */
+"jvu-Mk-H3f.placeholder" = "Búsqueda Tenor";
