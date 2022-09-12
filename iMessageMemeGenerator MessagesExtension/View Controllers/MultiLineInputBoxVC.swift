@@ -16,10 +16,20 @@ public protocol MultiLineInputBoxDelegate: AnyObject {
 class MultiLineInputBoxVC: UIViewController {
 
     var delegate: MultiLineInputBoxDelegate?
-    var selectionImageData: Data?
-    var selectionVideoPath: URL?
+    private var selectionImageData: Data?
+    private var selectionVideoPath: URL?
     private var textView: UITextView!
     private var submitButton: UIButton!
+    
+    convenience public init(withSelectionImageData imageData: Data) {
+        self.init()
+        self.selectionImageData = imageData
+    }
+    
+    convenience public init(withSelectionVideoPath videoPath: URL) {
+        self.init()
+        self.selectionVideoPath = videoPath
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

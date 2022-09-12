@@ -22,7 +22,6 @@ class TenorPickerVC: UIViewController, LoadableView {
     var becomeResponderAfterExpand: Bool = false
     let searchController = TenorSearchResultsController()
     var searchText = ""
-    let spacing = CGFloat(2)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +35,9 @@ class TenorPickerVC: UIViewController, LoadableView {
         self.searchBar.delegate = self
         self.searchBar.searchTextField.delegate = self
         
-        self.collectionView.contentInset = UIEdgeInsets.init(top: self.spacing, left: self.spacing, bottom: self.spacing, right: self.spacing)
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.minimumLineSpacing = self.spacing
-            layout.minimumInteritemSpacing = self.spacing
+        if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.minimumLineSpacing = LayoutSettings.spacing
+            layout.minimumInteritemSpacing = LayoutSettings.spacing
         }
         
         self.loadingView.frame = self.view.bounds
@@ -76,9 +74,8 @@ class TenorPickerVC: UIViewController, LoadableView {
     func openCaptionBoxWithImageData(gifData: Data) {
         self.searchBar.resignFirstResponder()
         
-        let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC()
+        let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionImageData: gifData)
         lineBoxInput.delegate = self
-        lineBoxInput.selectionImageData = gifData
         
         MessagesViewController.shared.requestPresentationStyle(.expanded)
         
@@ -143,7 +140,7 @@ extension TenorPickerVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let numberOfItemsInRow = CGFloat(UIView.itemsPerRow())
+        let numberOfItemsInRow = CGFloat(LayoutSettings.itemsPerRow)
         
         var columnWidth = (self.collectionView.frame.size.width - collectionView.contentInset.left - collectionView.contentInset.right)
         
@@ -153,8 +150,7 @@ extension TenorPickerVC: UICollectionViewDelegateFlowLayout {
         
         columnWidth /= numberOfItemsInRow
         
-        let height = 150.0 / 200.0 * columnWidth
-        return CGSize(width: columnWidth, height: height)
+        return CGSize(width: columnWidth, height: columnWidth)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -174,6 +170,7 @@ extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldD
         searchBar.resignFirstResponder()
         self.searchController.search(searchText) { _ in
             DispatchQueue.main.async {
+                self.collectionView.setContentOffset(.zero, animated: false)
                 self.collectionView.reloadData()
             }
         }

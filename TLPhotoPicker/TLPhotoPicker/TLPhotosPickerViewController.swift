@@ -37,17 +37,19 @@ extension TLPhotosPickerViewControllerDelegate {
 }
 
 //for log
-public protocol TLPhotosPickerLogDelegate: AnyObject {
+public protocol TLPhotosPickerEventDelegate: AnyObject {
     func selectedCameraCell(picker: TLPhotosPickerViewController)
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int)
+    func singleSelectedAsset(asset: TLPHAsset, picker: TLPhotosPickerViewController, at: Int)
     func selectedAlbum(picker: TLPhotosPickerViewController, title: String, at: Int)
 }
 
-public extension TLPhotosPickerLogDelegate {
+public extension TLPhotosPickerEventDelegate {
     func selectedCameraCell(picker: TLPhotosPickerViewController) { }
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int) { }
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int) { }
+    func singleSelectedAsset(asset: TLPHAsset, picker: TLPhotosPickerViewController, at: Int) { }
     func selectedAlbum(picker: TLPhotosPickerViewController, title: String, at: Int) { }
 }
 
@@ -139,7 +141,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var photosButton: UIBarButtonItem!
     
     public weak var delegate: TLPhotosPickerViewControllerDelegate? = nil
-    public weak var logDelegate: TLPhotosPickerLogDelegate? = nil
+    public weak var eventDelegate: TLPhotosPickerEventDelegate? = nil
     open var selectedAssets = [TLPHAsset]()
     public var configure = TLPhotosPickerConfigure()
     public var customDataSouces: TLPhotopickerDataSourcesProtocol? = nil
@@ -638,12 +640,12 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
                 guard self?.maxCheck() == false else { return }
                 if success, let `self` = self, let identifier = placeholderAsset?.localIdentifier {
                     guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil).firstObject,
-                        self.canSelect(phAsset: asset) else { return }
+                        self.canSelect(phAsset: asset), !self.configure.singleSelectedMode else { return }
                     var result = TLPHAsset(asset: asset)
                     result.selectedOrder = self.selectedAssets.count + 1
                     result.isSelectedFromCamera = true
                     self.selectedAssets.append(result)
-                    self.logDelegate?.selectedPhoto(picker: self, at: 1)
+                    self.eventDelegate?.selectedPhoto(picker: self, at: 1)
                 }
             })
         }
@@ -656,12 +658,12 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
                 guard self?.maxCheck() == false else { return }
                 if sucess, let `self` = self, let identifier = placeholderAsset?.localIdentifier {
                     guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil).firstObject,
-                        self.canSelect(phAsset: asset) else { return }
+                        self.canSelect(phAsset: asset), !self.configure.singleSelectedMode else { return }
                     var result = TLPHAsset(asset: asset)
                     result.selectedOrder = self.selectedAssets.count + 1
                     result.isSelectedFromCamera = true
                     self.selectedAssets.append(result)
-                    self.logDelegate?.selectedPhoto(picker: self, at: 1)
+                    self.eventDelegate?.selectedPhoto(picker: self, at: 1)
                 }
             }
         }
@@ -908,7 +910,12 @@ extension TLPhotosPickerViewController: UICollectionViewDelegate,UICollectionVie
             return
         }
         
-        toggleSelection(for: cell, at: indexPath)
+        if self.configure.singleSelectedMode {
+            singleSelect(indexPath: indexPath)
+        }
+        else {
+            toggleSelection(for: cell, at: indexPath)
+        }
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -1121,7 +1128,7 @@ extension TLPhotosPickerViewController: UICollectionViewDelegateFlowLayout {
 extension TLPhotosPickerViewController: UITableViewDelegate, UITableViewDataSource {
     //delegate
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.logDelegate?.selectedAlbum(picker: self, title: self.collections[indexPath.row].title, at: indexPath.row)
+        self.eventDelegate?.selectedAlbum(picker: self, title: self.collections[indexPath.row].title, at: indexPath.row)
         self.focused(collection: self.collections[indexPath.row])
     }
     
@@ -1207,8 +1214,14 @@ extension TLPhotosPickerViewController {
             } else {
                 showCameraIfAuthorized()
             }
-            logDelegate?.selectedCameraCell(picker: self)
+            eventDelegate?.selectedCameraCell(picker: self)
         }
+    }
+    
+    func singleSelect(indexPath: IndexPath) {
+        guard let collection = focusedCollection, let asset = collection.getTLAsset(at: indexPath), let phAsset = asset.phAsset, canSelect(phAsset: phAsset) else { return }
+
+        self.eventDelegate?.singleSelectedAsset(asset: asset, picker: self, at: indexPath.row)
     }
     
     open func toggleSelection(for cell: TLPhotoCollectionViewCell, at indexPath: IndexPath) {
@@ -1218,7 +1231,7 @@ extension TLPhotosPickerViewController {
         
         if let index = selectedAssets.firstIndex(where: { $0.phAsset == asset.phAsset }) {
         //deselect
-            logDelegate?.deselectedPhoto(picker: self, at: indexPath.row)
+            eventDelegate?.deselectedPhoto(picker: self, at: indexPath.row)
             selectedAssets.remove(at: index)
             #if swift(>=4.1)
             selectedAssets = selectedAssets.enumerated().compactMap({ (offset,asset) -> TLPHAsset? in
@@ -1241,7 +1254,7 @@ extension TLPhotosPickerViewController {
             }
         } else {
         //select
-            logDelegate?.selectedPhoto(picker: self, at: indexPath.row)
+            eventDelegate?.selectedPhoto(picker: self, at: indexPath.row)
             guard !maxCheck(), canSelect(phAsset: phAsset) else { return }
             
             asset.selectedOrder = selectedAssets.count + 1

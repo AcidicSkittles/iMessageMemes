@@ -12,12 +12,4 @@ extension UIView {
     class func fromNib<T: UIView>() -> T {
         return Bundle(for: T.self).loadNibNamed(String(describing: T.self), owner: nil, options: nil)![0] as! T
     }
-    
-    class func itemsPerRow() -> Int {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return 6
-        } else {
-            return 3
-        }
-    }
 }
