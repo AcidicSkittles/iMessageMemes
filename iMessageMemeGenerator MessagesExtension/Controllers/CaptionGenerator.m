@@ -12,13 +12,15 @@
 @import AVFoundation;
 @import ImageIO;
 
-#define kOptimizeTransparencyThreshold 12
-
 @implementation CaptionGenerator
 
-+ (NSString*)defaultMemeFontName {
-    return @"HelveticaNeue-Light";
-}
+NSString *const DEFAULT_MEME_FONT = @"HelveticaNeue-Light";
+/**
+ The more transparency a GIF has, the lower its file size. This setting is used
+ by ImageMagick to compute the transparent pixels on the current frame based
+ on this threshold value to the underlying pixels on the previous frame.
+ */
+static double const OPTIMIZED_GIF_TRANSPARENCY_FUZZ = 12;
 
 - (void)generateCaption:(NSString*)text toImageData:(NSData*)imageData {
     [self generateCaption:text toImageData:imageData withMinOutputResolution:480];
@@ -33,13 +35,7 @@
     int maxLabelWidth = MAX(imageWidth.intValue, desiredMinWidth);
     
     int innerXPadding = 5;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, maxLabelWidth - innerXPadding, 1000)];
-    label.text = text;
-    label.textAlignment = NSTextAlignmentLeft;
-    label.textColor = [UIColor colorWithRed:25.0/255.0 green:25.0/255.0 blue:25.0/255.0 alpha:1];
-    label.numberOfLines = 0;
-    label.font = [UIFont fontWithName:[CaptionGenerator defaultMemeFontName] size:MAX(12, maxLabelWidth/15.0)];
-    [label sizeToFit];
+    UILabel *label = [self captionedLabelWithText:text insetXSpacing:innerXPadding mediaWidth:maxLabelWidth];
     
     int innerYPadding = label.font.pointSize;
     
@@ -90,7 +86,7 @@
             size_t w, h;
             MagickGetImagePage(base, &w, &h, &x, &y);
             
-            NSLog(@"Frame: %i Disposal: %i Geometry: x:%zi y:%zi w:%zu h:%zu", i, MagickGetImageDispose(base), x, y, w, h);
+            NSLog(@"Frame: %i Disposal: %i Geometry: (x:%zi y:%zi w:%zu h:%zu)", i, MagickGetImageDispose(base), x, y, w, h);
             
             if(i == 0 || MagickGetImageDispose(base) == PreviousDispose ||
                (previousFrameDisposal == BackgroundDispose && MagickGetImageDispose(base) == NoneDispose)) {
@@ -119,14 +115,15 @@
                 localY += caption.size.height;
                 localH += caption.size.height;
                 
-                NSLog(@"New Geometry: x:%zi y:%zi w:%zu h:%zu", localX+borderW, localY+borderH, localW, localH);
+                NSLog(@"New frame geometry: (x:%zi y:%zi w:%zu h:%zu)", localX+borderW, localY+borderH, localW, localH);
                 MagickSetImagePage(localWand, localW, localH, localX+borderW, localY+borderH);
             }
             
             MagickAddImage(frames, localWand);
             MagickSetImageDelay(frames, MagickGetImageDelay(base));
             MagickSetImageDispose(frames, MagickGetImageDispose(base));
-            MagickSetImageFuzz(frames, kOptimizeTransparencyThreshold);
+            // adding "fuzz" reduces quality, but also makes the resulting file size smaller
+            MagickSetImageFuzz(frames, OPTIMIZED_GIF_TRANSPARENCY_FUZZ);
             MagickCommentImage(frames, (const char*)[label.text UTF8String]);
             
             localWand = DestroyMagickWand(localWand);
@@ -151,7 +148,7 @@
         [captionedImageData writeToURL:captionedImagePath atomically:YES];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.delegate finishedCaptionedImagePath:captionedImagePath];
+            [self.delegate finishedCaptionedImageAtPath:captionedImagePath];
         });
     });
 }
@@ -162,7 +159,6 @@
 
 - (void)generateCaption:(NSString*)text toVideoAtPath:(NSURL*)videoPath withMinOutputResolution:(int)desiredMinWidth {
     
-    //AVAsset *asset = [AVAsset assetWithURL:self.videoPath];
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoPath options:@{AVURLAssetPreferPreciseDurationAndTimingKey : @YES}];
     NSLog(@"Asset duration %e", CMTimeGetSeconds(asset.duration));
     
@@ -174,7 +170,7 @@
     
     [compositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, videoTrack.timeRange.duration) ofTrack:[[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
     
-    //add audio track if it is present, not all videos have audio
+    // add audio track if it is present, not all videos have audio
     if([asset tracksWithMediaType:AVMediaTypeAudio].count) {
         AVMutableCompositionTrack *compositionAudioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
         [compositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, videoTrack.timeRange.duration) ofTrack:[[asset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
@@ -201,19 +197,13 @@
     
     CGSize originalSize = videoSize;
     
-    //upscale to higher res so caption is readable:
+    // upscale to higher res so caption is readable:
     if(videoSize.width < desiredMinWidth)
         videoSize = CGSizeMake(desiredMinWidth, videoSize.height * ((CGFloat)desiredMinWidth/(CGFloat)videoSize.width));
     
-    //label creation must be done on ui thread
+    // label creation must be done on ui thread
     int innerXPadding = 12;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, videoSize.width - innerXPadding*2, 1000)];
-    label.text = text;
-    label.textAlignment = NSTextAlignmentLeft;
-    label.textColor = [UIColor colorWithRed:25.0/255.0 green:25.0/255.0 blue:25.0/255.0 alpha:1];
-    label.numberOfLines=0;
-    label.font = [UIFont fontWithName:[CaptionGenerator defaultMemeFontName] size:MAX(12, videoSize.width/15.0)];
-    [label sizeToFit];
+    UILabel *label = [self captionedLabelWithText:text insetXSpacing:innerXPadding mediaWidth:videoSize.width];
     
     int innerYPadding = label.font.pointSize;
     
@@ -311,19 +301,33 @@
         
         // TODO: videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer will crash EXC_BAD_INSTRUCTION in the Simulator, but not device
         if(TARGET_OS_SIMULATOR) {
-            NSLog(@"⚠️⚠️");
-            NSLog(@"Important note: videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer will crash EXC_BAD_INSTRUCTION in the Simulator, but not device. Discussion: https://developer.apple.com/forums/thread/133681");
-            NSLog(@"⚠️⚠️");
-        }
-        
-        [assetExport exportAsynchronouslyWithCompletionHandler:^(void) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"Asset error %@ - %ld", assetExport.error, (long)assetExport.status);
-                
-                [self.delegate finishedCaptionedVideoPath:captionedVideoPath];
+                NSString *errorDescription = @"Important note: videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer will cause crash EXC_BAD_INSTRUCTION in the Simulator, but not device. Discussion: https://developer.apple.com/forums/thread/133681 (visit link in console). Alternatively, run on a device.";
+                NSError *error = [NSError errorWithDomain:@"" code:1 userInfo:@{NSLocalizedDescriptionKey : errorDescription}];
+                NSLog(@"%@", error.localizedDescription);
+                [self.delegate finishedCaptionedVideoAtPath:nil withError:error];
             });
-        }];
+        } else {
+            [assetExport exportAsynchronouslyWithCompletionHandler:^(void) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.delegate finishedCaptionedVideoAtPath:captionedVideoPath withError: assetExport.error];
+                });
+            }];
+        }
     });
+}
+
+-(UILabel*)captionedLabelWithText:(NSString*)text insetXSpacing:(int)insetXSpacing mediaWidth:(int)width {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width - insetXSpacing*2, 1000)];
+    label.text = text;
+    label.textAlignment = NSTextAlignmentLeft;
+    label.textColor = [UIColor colorWithRed:25.0/255.0 green:25.0/255.0 blue:25.0/255.0 alpha:1];
+    label.numberOfLines = 0;
+    label.font = [UIFont fontWithName:DEFAULT_MEME_FONT size:MAX(12, width/15.0)];
+    [label sizeToFit];
+    
+    return label;
 }
 
 @end

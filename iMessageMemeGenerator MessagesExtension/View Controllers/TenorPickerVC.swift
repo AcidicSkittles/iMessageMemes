@@ -209,13 +209,17 @@ extension TenorPickerVC: MultiLineInputBoxDelegate {
 
 extension TenorPickerVC: CaptionGeneratorDelegate {
     
-    func finishedCaptionedImagePath(_ captionedImagePath: URL) {
+    func finishedCaptionedImage(atPath captionedImagePath: URL) {
         self.loadingView.isHidden = true
         MessagesViewController.shared.composeMessage(with: captionedImagePath)
     }
     
-    func finishedCaptionedVideoPath(_ captionedVideoPath: URL) {
+    func finishedCaptionedVideo(atPath captionedVideoPath: URL?, withError error: Error?) {
         self.loadingView.isHidden = true
-        MessagesViewController.shared.composeMessage(with: captionedVideoPath)
+        if let error = error {
+            self.show(alert: error.localizedDescription)
+        } else if let captionedVideoPath = captionedVideoPath {
+            MessagesViewController.shared.composeMessage(with: captionedVideoPath)
+        }
     }
 }

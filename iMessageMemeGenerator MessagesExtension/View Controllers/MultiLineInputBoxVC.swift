@@ -59,7 +59,7 @@ class MultiLineInputBoxVC: UIViewController {
         }
         
         self.textView = UITextView(frame: self.view.bounds)
-        self.textView.font = UIFont(name: CaptionGenerator.defaultMemeFontName(), size: 16)
+        self.textView.font = UIFont(name: DEFAULT_MEME_FONT, size: 16)
         self.textView.autocapitalizationType = .sentences
         self.textView.autocorrectionType = .yes
         self.textView.inputAccessoryView = self.submitButton
