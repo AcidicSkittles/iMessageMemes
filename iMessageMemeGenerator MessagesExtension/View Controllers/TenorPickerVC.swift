@@ -18,7 +18,6 @@ class TenorPickerVC: UIViewController, LoadableView {
     @IBOutlet weak var collectionView: UICollectionView!
     weak public var tenorUrlDelegate: TenorUrlDelegate?
     var loadingView: LoadingView = UIView.fromNib()
-    let captionGenerator: CaptionGenerator = CaptionGenerator()
     var becomeResponderAfterExpand: Bool = false
     let searchController = TenorSearchResultsController()
     var searchText = ""
@@ -43,8 +42,6 @@ class TenorPickerVC: UIViewController, LoadableView {
         self.loadingView.frame = self.view.bounds
         self.loadingView.isHidden = true
         self.view.addSubview(self.loadingView)
-        
-        self.captionGenerator.delegate = self
         
         NotificationCenter.default.addObserver(
             self,
@@ -194,32 +191,24 @@ extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldD
 
 extension TenorPickerVC: MultiLineInputBoxDelegate {
     
-    func addText(text: String, toImageData imageData: Data) {
+    func add(text: String, toImageData imageData: Data) {
         self.loadingView.isHidden = false
         
-        self.captionGenerator.generateCaption(text, toImageData: imageData)
-    }
-    
-    func addText(text: String, toVideoAtPath videoPath: URL) {
-        self.loadingView.isHidden = false
-        
-        self.captionGenerator.generateCaption(text, toVideoAtPath: videoPath)
+        let captionGenerator: ImageCaptionGenerator = ImageCaptionGenerator()
+        captionGenerator.delegate = self
+        captionGenerator.generateCaption(text, toImageData: imageData)
     }
 }
 
 extension TenorPickerVC: CaptionGeneratorDelegate {
     
-    func finishedCaptionedImage(atPath captionedImagePath: URL) {
+    func finishedCaptionedMedia(atPath captionedMediaPath: URL?, withError error: Error?) {
         self.loadingView.isHidden = true
-        MessagesViewController.shared.composeMessage(with: captionedImagePath)
-    }
-    
-    func finishedCaptionedVideo(atPath captionedVideoPath: URL?, withError error: Error?) {
-        self.loadingView.isHidden = true
+        
         if let error = error {
             self.show(alert: error.localizedDescription)
-        } else if let captionedVideoPath = captionedVideoPath {
-            MessagesViewController.shared.composeMessage(with: captionedVideoPath)
+        } else if let captionedMediaPath = captionedMediaPath {
+            MessagesViewController.shared.composeMessage(with: captionedMediaPath)
         }
     }
 }

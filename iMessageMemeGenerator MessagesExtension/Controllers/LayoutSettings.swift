@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct LayoutSettings {
     static let spacing: CGFloat = 2

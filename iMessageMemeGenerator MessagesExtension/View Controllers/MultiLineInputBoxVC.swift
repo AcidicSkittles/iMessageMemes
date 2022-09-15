@@ -9,17 +9,23 @@ import UIKit
 import SnapKit
 
 public protocol MultiLineInputBoxDelegate: AnyObject {
-    func addText(text: String, toImageData imageData: Data)
-    func addText(text: String, toVideoAtPath videoPath: URL)
+    func add(text: String, toImageData imageData: Data)
+    func add(text: String, toVideoAtPath videoPath: URL)
+}
+
+extension MultiLineInputBoxDelegate {
+    func add(text: String, toImageData imageData: Data) {}
+    func add(text: String, toVideoAtPath videoPath: URL) {}
 }
 
 class MultiLineInputBoxVC: UIViewController {
 
-    var delegate: MultiLineInputBoxDelegate?
+    weak var delegate: MultiLineInputBoxDelegate?
     private var selectionImageData: Data?
     private var selectionVideoPath: URL?
     private var textView: UITextView!
     private var submitButton: UIButton!
+    var maxInputTextLength: Int = 2048
     
     convenience public init(withSelectionImageData imageData: Data) {
         self.init()
@@ -59,7 +65,7 @@ class MultiLineInputBoxVC: UIViewController {
         }
         
         self.textView = UITextView(frame: self.view.bounds)
-        self.textView.font = UIFont(name: DEFAULT_MEME_FONT, size: 16)
+        self.textView.font = UIFont(name: MemeLabelMaker.defaultMemeFont, size: 16)
         self.textView.autocapitalizationType = .sentences
         self.textView.autocorrectionType = .yes
         self.textView.inputAccessoryView = self.submitButton
@@ -80,10 +86,15 @@ class MultiLineInputBoxVC: UIViewController {
     
     @objc func submitPressed() {
         
+        if self.textView.text.count > self.maxInputTextLength {
+            self.show(alert: "Please keep your memes less than \(self.maxInputTextLength) characters. We make memes here, not book reports! Your meme was \(self.textView.text.count) in length 🤪")
+            return
+        }
+        
         if self.selectionImageData != nil {
-            self.delegate?.addText(text: self.textView.text ?? "", toImageData: self.selectionImageData!)
+            self.delegate?.add(text: self.textView.text ?? "", toImageData: self.selectionImageData!)
         } else if self.selectionVideoPath != nil {
-            self.delegate?.addText(text: self.textView.text ?? "", toVideoAtPath: self.selectionVideoPath!)
+            self.delegate?.add(text: self.textView.text ?? "", toVideoAtPath: self.selectionVideoPath!)
         }
         
         self.close()

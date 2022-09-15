@@ -13,7 +13,6 @@ import MobileCoreServices
 class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControllerDelegate, LoadableView {
     
     var loadingView: LoadingView = UIView.fromNib()
-    let captionGenerator: CaptionGenerator = CaptionGenerator()
     
     @objc override init() {
         super.init()
@@ -30,8 +29,6 @@ class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControlle
         self.loadingView.frame = self.view.bounds
         self.loadingView.isHidden = true
         self.view.addSubview(self.loadingView)
-        
-        self.captionGenerator.delegate = self
         
         self.setupLoadingView()
     }
@@ -188,30 +185,32 @@ extension LibraryPickerVC: TLPhotosPickerEventDelegate {
 }
 
 extension LibraryPickerVC: MultiLineInputBoxDelegate {
-    func addText(text: String, toImageData imageData: Data) {
+    func add(text: String, toImageData imageData: Data) {
         self.loadingView.isHidden = false
-        self.captionGenerator.generateCaption(text, toImageData: imageData)
+        
+        let captionGenerator: ImageCaptionGenerator = ImageCaptionGenerator()
+        captionGenerator.delegate = self
+        captionGenerator.generateCaption(text, toImageData: imageData)
     }
     
-    func addText(text: String, toVideoAtPath videoPath: URL) {
+    func add(text: String, toVideoAtPath videoPath: URL) {
         self.loadingView.isHidden = false
-        self.captionGenerator.generateCaption(text, toVideoAtPath: videoPath)
+        
+        let captionGenerator: VideoCaptionGenerator = VideoCaptionGenerator()
+        captionGenerator.delegate = self
+        captionGenerator.generateCaption(text, toVideoAtPath: videoPath)
     }
 }
 
 extension LibraryPickerVC: CaptionGeneratorDelegate {
-    func finishedCaptionedImage(atPath captionedImagePath: URL) {
-        self.loadingView.isHidden = true
-        MessagesViewController.shared.composeMessage(with: captionedImagePath)
-    }
     
-    func finishedCaptionedVideo(atPath captionedVideoPath: URL?, withError error: Error?) {
+    func finishedCaptionedMedia(atPath captionedMediaPath: URL?, withError error: Error?) {
         self.loadingView.isHidden = true
         
         if let error = error {
             self.show(alert: error.localizedDescription)
-        } else if let captionedVideoPath = captionedVideoPath {
-            MessagesViewController.shared.composeMessage(with: captionedVideoPath)
+        } else if let captionedMediaPath = captionedMediaPath {
+            MessagesViewController.shared.composeMessage(with: captionedMediaPath)
         }
     }
 }
