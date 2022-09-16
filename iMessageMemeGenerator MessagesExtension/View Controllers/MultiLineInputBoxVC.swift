@@ -40,6 +40,19 @@ class MultiLineInputBoxVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.configureUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.textView.becomeFirstResponder()
+    }
+}
+
+// MARK: - UI & UI Actions
+extension MultiLineInputBoxVC {
+    private func configureUI() {
         self.view.backgroundColor = .white
         
         let navBar = UINavigationBar(frame: .zero)
@@ -76,12 +89,6 @@ class MultiLineInputBoxVC: UIViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(navBar.snp.bottom)
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.textView.becomeFirstResponder()
     }
     
     @objc func submitPressed() {

@@ -1,5 +1,5 @@
 //
-//  TenorSearchResultsController.swift
+//  TenorSearchResultsRepository.swift
 //  iMessageMemeGenerator MessagesExtension
 //
 //  Created by Derek Buchanan on 9/1/22.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-class TenorSearchResultsController: NSObject {
+class TenorSearchResultsRepository: NSObject {
     private var nextPagePositionId: String?
-    var searchResults: [TenorGifModel] = []
-    var isLoading: Bool = false
-    var searchText: String = ""
+    private(set) var searchResults: [TenorGifModel] = []
+    private(set) var isLoading: Bool = false
+    private var searchText: String = ""
     
-    func search(_ searchText: String, completion: @escaping ((Error?) -> Void)) {
+    func search(_ searchText: String?, completion: @escaping ((Error?) -> Void)) {
         self.isLoading = true
-        self.searchText = searchText
+        self.searchText = searchText ?? ""
         self.nextPagePositionId = nil
         TenorAPI.search(searchText, nextPagePositionId: "0") { (tenorSearchResults, error) in
             self.isLoading = false
@@ -30,7 +30,7 @@ class TenorSearchResultsController: NSObject {
         }
     }
     
-    func loadPage(_ nextPagePositionId: String?, completion: @escaping ((Error?) -> Void)) {
+    func loadPage(_ nextPagePositionId: String, completion: @escaping ((Error?) -> Void)) {
         self.isLoading = true
         
         TenorAPI.search(self.searchText, nextPagePositionId: nextPagePositionId) { (tenorSearchResults, error) in

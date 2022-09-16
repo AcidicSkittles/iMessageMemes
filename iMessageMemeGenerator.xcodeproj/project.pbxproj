@@ -13,7 +13,7 @@
 		6525365C28C0FCCE001BC340 /* TenorSearchResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525365B28C0FCCE001BC340 /* TenorSearchResultsModel.swift */; };
 		6525365E28C0FCDE001BC340 /* TenorMediaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525365D28C0FCDE001BC340 /* TenorMediaModel.swift */; };
 		6525366228C1252A001BC340 /* UIViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525366128C1252A001BC340 /* UIViewController+extensions.swift */; };
-		6525366628C13E7D001BC340 /* TenorSearchResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525366528C13E7D001BC340 /* TenorSearchResultsController.swift */; };
+		6525366628C13E7D001BC340 /* TenorSearchResultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525366528C13E7D001BC340 /* TenorSearchResultsRepository.swift */; };
 		6525366828C13F51001BC340 /* TenorAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525366728C13F51001BC340 /* TenorAPI.swift */; };
 		6525366C28C2930D001BC340 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6525366E28C2930D001BC340 /* Localizable.strings */; };
 		6525367128C29635001BC340 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525367028C29635001BC340 /* String+extensions.swift */; };
@@ -94,7 +94,7 @@
 		6525365B28C0FCCE001BC340 /* TenorSearchResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorSearchResultsModel.swift; sourceTree = "<group>"; };
 		6525365D28C0FCDE001BC340 /* TenorMediaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorMediaModel.swift; sourceTree = "<group>"; };
 		6525366128C1252A001BC340 /* UIViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extensions.swift"; sourceTree = "<group>"; };
-		6525366528C13E7D001BC340 /* TenorSearchResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorSearchResultsController.swift; sourceTree = "<group>"; };
+		6525366528C13E7D001BC340 /* TenorSearchResultsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorSearchResultsRepository.swift; sourceTree = "<group>"; };
 		6525366728C13F51001BC340 /* TenorAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenorAPI.swift; sourceTree = "<group>"; };
 		6525366B28C16AB7001BC340 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		6525366D28C2930D001BC340 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -198,7 +198,6 @@
 		6525366328C13E39001BC340 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				6525366528C13E7D001BC340 /* TenorSearchResultsController.swift */,
 				6525366728C13F51001BC340 /* TenorAPI.swift */,
 				6525367928CF9167001BC340 /* LayoutSettings.swift */,
 				6525368B28D3AD4A001BC340 /* Caption Generator */,
@@ -234,6 +233,14 @@
 				6525369728D40EFF001BC340 /* XIBLocalizable.swift */,
 			);
 			path = "Protocols & Interfaces";
+			sourceTree = "<group>";
+		};
+		6525369A28D50D62001BC340 /* Data Repository */ = {
+			isa = PBXGroup;
+			children = (
+				6525366528C13E7D001BC340 /* TenorSearchResultsRepository.swift */,
+			);
+			path = "Data Repository";
 			sourceTree = "<group>";
 		};
 		65D66E9128BEAB7800990404 = {
@@ -287,6 +294,7 @@
 		65D66EA828BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				6525369A28D50D62001BC340 /* Data Repository */,
 				6525368C28D40C36001BC340 /* Protocols & Interfaces */,
 				6525366328C13E39001BC340 /* Controllers */,
 				65D675F928BFDD9800990404 /* Extensions */,
@@ -545,7 +553,7 @@
 				6525365928C0FAFC001BC340 /* TenorGifModel.swift in Sources */,
 				65D675FB28BFE0BA00990404 /* TenorPickerVC.swift in Sources */,
 				65D675F128BFB85000990404 /* UIImage+extensions.swift in Sources */,
-				6525366628C13E7D001BC340 /* TenorSearchResultsController.swift in Sources */,
+				6525366628C13E7D001BC340 /* TenorSearchResultsRepository.swift in Sources */,
 				6525365728C0FAB9001BC340 /* TenorCollectionViewCell.swift in Sources */,
 				65D675F328BFD42B00990404 /* LibraryPickerVC.swift in Sources */,
 				6525369828D40EFF001BC340 /* XIBLocalizable.swift in Sources */,

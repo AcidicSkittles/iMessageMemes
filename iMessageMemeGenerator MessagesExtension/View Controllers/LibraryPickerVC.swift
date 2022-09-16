@@ -10,20 +10,32 @@ import TLPhotoPicker
 import PhotosUI
 import MobileCoreServices
 
-class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControllerDelegate, LoadableView {
+class LibraryPickerVC: TLPhotosPickerViewController, LoadableView {
     
     var loadingView: LoadingView = UIView.fromNib()
     
     @objc override init() {
         super.init()
         
+        self.configureUI()
+        self.setupLoadingView()
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        self.init()
+    }
+}
+
+// MARK: - UI & UI Actions
+extension LibraryPickerVC {
+    private func configureUI() {
         var configure = TLPhotosPickerConfigure()
         configure.numberOfColumn = LayoutSettings.itemsPerRow
         configure.minimumLineSpacing = LayoutSettings.spacing
         configure.minimumInteritemSpacing = LayoutSettings.spacing
         configure.allowedAlbumCloudShared = true
         configure.singleSelectedMode = true
-        configure.customLocalizedTitle = ["CAMERA_ROLL".localized : "CAMERA_ROLL".localized]
+        configure.customLocalizedTitle = ["CAMERA_ROLL".localized: "CAMERA_ROLL".localized]
         configure.tapHereToChange = "TAP_TO_CHANGE".localized
         configure.cancelTitle = "CANCEL".localized
         configure.doneTitle = "DONE".localized
@@ -31,33 +43,11 @@ class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControlle
         configure.selectMessage = "SELECT".localized
         configure.deselectMessage = "DESELECT".localized
         self.configure = configure
+        
         self.delegate = self
         self.eventDelegate = self
-        self.loadingView.frame = self.view.bounds
-        self.loadingView.isHidden = true
-        self.view.addSubview(self.loadingView)
-        
-        self.setupLoadingView()
     }
     
-    required convenience init?(coder aDecoder: NSCoder) {
-        self.init()
-    }
-    
-    func canSelectAsset(phAsset: PHAsset) -> Bool {
-        return !MessagesViewController.shared.isTransitioning
-    }
-    
-    public func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) {
-        self.show(alert: "You must enable photo album access under Settings ➡️ Privacy ➡️ Photos")
-    }
-    
-    public func handleNoCameraPermissions(picker: TLPhotosPickerViewController) {
-        self.show(alert: "You must enable camera access under Settings ➡️ Privacy ➡️ Camera")
-    }
-}
-
-extension LibraryPickerVC {
     func caption(asset: TLPHAsset) {
         guard !MessagesViewController.shared.isTransitioning, let phAsset: PHAsset = asset.phAsset else { return }
         
@@ -71,51 +61,14 @@ extension LibraryPickerVC {
                 self.loadingView.isHidden = false
             }
             
-            PHImageManager.default().requestImageData(for: phAsset, options: options) { (data: Data?, _, orientation: UIImage.Orientation, _) in
-                
-                if let data = data, let image: UIImage = UIImage(data: data) {
-                    if orientation != .up {
-                        self.loadingView.isHidden = false
-                        
-                        DispatchQueue.global(qos: .userInitiated).async {
-                            let upRightImage = UIImage.imageRedrawnUpright(image: image)
-                            
-                            if let imageData = upRightImage.pngData() {
-                                let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionImageData: imageData)
-                                lineBoxInput.delegate = self
-                                
-                                DispatchQueue.main.async {
-                                    self.loadingView.isHidden = true
-                                    
-                                    MessagesViewController.shared.requestPresentationStyle(.expanded)
-                                    
-                                    self.present(lineBoxInput, animated: true)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    self.loadingView.isHidden = true
-                                    self.show(alert: "UNSUPPORTED_FILE".localized)
-                                }
-                            }
-                        }
-                    } else {
-                        let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionImageData: data)
-                        lineBoxInput.delegate = self
-                        
-                        DispatchQueue.main.async {
-                            self.loadingView.isHidden = true
-                            
-                            MessagesViewController.shared.requestPresentationStyle(.expanded)
-                            
-                            self.present(lineBoxInput, animated: true)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self.loadingView.isHidden = true
-                        self.show(alert: "UNSUPPORTED_FILE".localized)
-                    }
+            PHImageManager.default().requestImageDataAndOrientation(for: phAsset, options: options) { (data: Data?, _, _, _) in
+                guard let data = data else {
+                    self.loadingView.isHidden = true
+                    self.show(alert: "UNSUPPORTED_FILE".localized)
+                    return
                 }
+                
+                self.selected(imageData: data)
             }
         case .video:
             let options: PHVideoRequestOptions = PHVideoRequestOptions()
@@ -127,43 +80,23 @@ extension LibraryPickerVC {
             }
             
             PHImageManager.default().requestAVAsset(forVideo: phAsset, options: options) { (avAsset: AVAsset?, _, _) in
-                
-                let completionHandler: (URL) -> Void = { videoPath in
-                    
-                    let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionVideoPath: videoPath)
-                    lineBoxInput.delegate = self
-                    
-                    MessagesViewController.shared.requestPresentationStyle(.expanded)
-                    
-                    self.present(lineBoxInput, animated: true)
-                }
-                
                 if let urlAsset: AVURLAsset = avAsset as? AVURLAsset {
-                    let localVideoUrl: URL = urlAsset.url
-                    
-                    let videoData: Data = try! Data.init(contentsOf: localVideoUrl)
-                    let tmpDirURL: URL = URL.init(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-                    let videoPath: URL = tmpDirURL.appendingPathComponent("temp").appendingPathExtension(localVideoUrl.pathExtension)
-                    try! videoData.write(to: videoPath)
-                
                     DispatchQueue.main.async {
-                        self.loadingView.isHidden = true
-                        completionHandler(videoPath)
+                        self.selected(videoPath: urlAsset.url)
                     }
                 } else if let avCompositionAsset = avAsset as? AVComposition,
                           let exporter = AVAssetExportSession(asset: avCompositionAsset, presetName: AVAssetExportPresetHighestQuality) {
                     
-                    let tmpDirURL: URL = URL.init(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-                    let videoPath: URL = tmpDirURL.appendingPathComponent("temp").appendingPathExtension("mp4")
-                    
-                    exporter.outputURL = videoPath
-                    exporter.outputFileType = AVFileType.mp4
+                    let outputType = AVFileType.mp4
+                    let mp4PathExtension = UTType(outputType.rawValue)!.preferredFilenameExtension!
+                    let outputPath = self.outputTempVideoPath(pathExtension: mp4PathExtension)
+                    exporter.outputURL = outputPath
+                    exporter.outputFileType = outputType
                     exporter.shouldOptimizeForNetworkUse = true
                 
                     exporter.exportAsynchronously {
                         DispatchQueue.main.async {
-                            self.loadingView.isHidden = true
-                            completionHandler(videoPath)
+                            self.selected(videoPath: outputPath)
                         }
                     }
                 } else {
@@ -175,8 +108,48 @@ extension LibraryPickerVC {
             }
         }
     }
+    
+    private func selected(imageData: Data) {
+        self.loadingView.isHidden = true
+        MessagesViewController.shared.requestPresentationStyle(.expanded)
+        
+        let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionImageData: imageData)
+        lineBoxInput.delegate = self
+        self.present(lineBoxInput, animated: true)
+    }
+    
+    private func selected(videoPath: URL) {
+        self.loadingView.isHidden = true
+        MessagesViewController.shared.requestPresentationStyle(.expanded)
+        
+        let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionVideoPath: videoPath)
+        lineBoxInput.delegate = self
+        self.present(lineBoxInput, animated: true)
+    }
+    
+    private func outputTempVideoPath(pathExtension: String) -> URL {
+        let tmpDirURL: URL = URL.init(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let videoPath: URL = tmpDirURL.appendingPathComponent("temp").appendingPathExtension(pathExtension)
+        return videoPath
+    }
 }
 
+// MARK: - TLPhotosPickerViewControllerDelegate
+extension LibraryPickerVC: TLPhotosPickerViewControllerDelegate {
+    func canSelectAsset(phAsset: PHAsset) -> Bool {
+        return !MessagesViewController.shared.isTransitioning
+    }
+    
+    func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) {
+        self.show(alert: "ENABLE_PHOTOS".localized)
+    }
+    
+    func handleNoCameraPermissions(picker: TLPhotosPickerViewController) {
+        self.show(alert: "ENABLE_CAMERA".localized)
+    }
+}
+
+// MARK: - TLPhotosPickerEventDelegate
 extension LibraryPickerVC: TLPhotosPickerEventDelegate {
     func selectedCameraCell(picker: TLPhotosPickerViewController) {
         MessagesViewController.shared.requestPresentationStyle(.expanded)
@@ -189,6 +162,7 @@ extension LibraryPickerVC: TLPhotosPickerEventDelegate {
     // swiftlint:enable identifier_name
 }
 
+// MARK: - MultiLineInputBoxDelegate
 extension LibraryPickerVC: MultiLineInputBoxDelegate {
     func add(text: String, toImageData imageData: Data) {
         self.loadingView.isHidden = false
@@ -207,6 +181,7 @@ extension LibraryPickerVC: MultiLineInputBoxDelegate {
     }
 }
 
+// MARK: - CaptionGeneratorDelegate
 extension LibraryPickerVC: CaptionGeneratorDelegate {
     
     func finishedCaptionedMedia(atPath captionedMediaPath: URL?, withError error: Error?) {

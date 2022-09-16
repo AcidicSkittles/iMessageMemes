@@ -16,17 +16,28 @@ class TenorPickerVC: UIViewController, LoadableView {
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
-    weak public var tenorUrlDelegate: TenorUrlDelegate?
+    weak var tenorUrlDelegate: TenorUrlDelegate?
     var loadingView: LoadingView = UIView.fromNib()
-    var becomeResponderAfterExpand: Bool = false
-    let searchController = TenorSearchResultsController()
-    var searchText = ""
+    private var becomeResponderAfterExpand: Bool = false
+    private let searchRepository = TenorSearchResultsRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ImagePipeline.Configuration.isAnimatedImageDataEnabled = true
-        
+        self.configureNukeImageLoading()
+        self.configureObserver()
+        self.configureUI()
+        self.setupLoadingView()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - UI & UI Actions
+extension TenorPickerVC {
+    private func configureUI() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.refresh()
@@ -39,19 +50,19 @@ class TenorPickerVC: UIViewController, LoadableView {
             layout.minimumLineSpacing = LayoutSettings.spacing
             layout.minimumInteritemSpacing = LayoutSettings.spacing
         }
-        
-        self.loadingView.frame = self.view.bounds
-        self.loadingView.isHidden = true
-        self.view.addSubview(self.loadingView)
-        
+    }
+    
+    private func configureObserver() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didTransition),
             name: MessagesViewController.didTransitionKey,
             object: nil
         )
-        
-        self.setupLoadingView()
+    }
+    
+    private func configureNukeImageLoading() {
+        ImagePipeline.Configuration.isAnimatedImageDataEnabled = true
     }
     
     @objc func didTransition() {
@@ -62,7 +73,7 @@ class TenorPickerVC: UIViewController, LoadableView {
     }
     
     @objc func refresh() {
-        self.searchController.search(searchText) { _ in
+        self.searchRepository.search(self.searchBar.text) { _ in
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
@@ -70,36 +81,32 @@ class TenorPickerVC: UIViewController, LoadableView {
     }
     
     func openCaptionBoxWithImageData(gifData: Data) {
+        self.loadingView.isHidden = true
         self.searchBar.resignFirstResponder()
+        MessagesViewController.shared.requestPresentationStyle(.expanded)
         
         let lineBoxInput: MultiLineInputBoxVC = MultiLineInputBoxVC(withSelectionImageData: gifData)
         lineBoxInput.delegate = self
-        
-        MessagesViewController.shared.requestPresentationStyle(.expanded)
-        
         self.present(lineBoxInput, animated: true)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension TenorPickerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.searchController.searchResults.count
+        return self.searchRepository.searchResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TenorCollectionViewCell", for: indexPath) as! TenorCollectionViewCell
-        cell.setup(searchController.searchResults[indexPath.item])
+        cell.setup(searchRepository.searchResults[indexPath.item])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if self.searchController.shouldLoadNextPage(indexPath.item) {
-            self.searchController.loadNextPage { _ in
+        if self.searchRepository.shouldLoadNextPage(indexPath.item) {
+            self.searchRepository.loadNextPage { _ in
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -113,33 +120,31 @@ extension TenorPickerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let urlStr = self.searchController.searchResults[indexPath.item].gifURL, let url = URL(string: urlStr) {
-            
-            TenorAPI.registerShare(searchText: self.searchBar.text, gifId: self.searchController.searchResults[indexPath.item].id)
+        if let urlStr = self.searchRepository.searchResults[indexPath.item].gifURL, let url = URL(string: urlStr) {
+            // Tenor API requirement: register a 'click' when a gif is selected and how user found the gif
+            TenorAPI.registerShare(searchText: self.searchBar.text, gifId: self.searchRepository.searchResults[indexPath.item].id)
 
             self.loadingView.isHidden = false
             
             let imageRequest = ImageRequest(url: url)
             ImagePipeline.shared.loadData(with: imageRequest) { [unowned self] result in
-                self.loadingView.isHidden = true
-                
                 switch result {
                 case .success(let loadedValue):
                     self.openCaptionBoxWithImageData(gifData: loadedValue.data)
                 default:
-                    self.show(alert: "Unable to download gif")
+                    self.show(alert: "DOWNLOAD_ERROR".localized)
                 }
             }
         }
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension TenorPickerVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let numberOfItemsInRow = CGFloat(LayoutSettings.itemsPerRow)
-        
         var columnWidth = (self.collectionView.frame.size.width - collectionView.contentInset.left - collectionView.contentInset.right)
         
         if let layoutCV = collectionViewLayout as? UICollectionViewFlowLayout {
@@ -157,6 +162,7 @@ extension TenorPickerVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - SearchBar
 extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -164,9 +170,8 @@ extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldD
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.searchText = searchBar.text ?? ""
         searchBar.resignFirstResponder()
-        self.searchController.search(searchText) { _ in
+        self.searchRepository.search(searchBar.text) { _ in
             DispatchQueue.main.async {
                 self.collectionView.setContentOffset(.zero, animated: false)
                 self.collectionView.reloadData()
@@ -175,7 +180,6 @@ extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldD
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchText = searchBar.text ?? ""
         self.refresh()
     }
     
@@ -190,6 +194,7 @@ extension TenorPickerVC: UISearchBarDelegate, UIScrollViewDelegate, UITextFieldD
     }
 }
 
+// MARK: - MultiLineInputBoxDelegate
 extension TenorPickerVC: MultiLineInputBoxDelegate {
     
     func add(text: String, toImageData imageData: Data) {
@@ -201,6 +206,7 @@ extension TenorPickerVC: MultiLineInputBoxDelegate {
     }
 }
 
+// MARK: - CaptionGeneratorDelegate
 extension TenorPickerVC: CaptionGeneratorDelegate {
     
     func finishedCaptionedMedia(atPath captionedMediaPath: URL?, withError error: Error?) {

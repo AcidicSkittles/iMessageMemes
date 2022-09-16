@@ -31,6 +31,8 @@ static double const defaultWidthInsetPadding = 5;
     CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
     NSDictionary* imageHeader = (__bridge NSDictionary*) CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
     NSNumber *imageWidth = (NSNumber *)[imageHeader objectForKey: (__bridge NSString *)kCGImagePropertyPixelWidth];
+    NSNumber *orientationKey = (NSNumber *)([imageHeader objectForKey: (__bridge NSString *)kCGImagePropertyOrientation] ?: @1);
+    CGImagePropertyOrientation imageOrientation = (CGImagePropertyOrientation)orientationKey.unsignedIntValue;
     
     int maxLabelWidth = MAX(imageWidth.intValue, desiredMinWidth);
     
@@ -47,13 +49,22 @@ static double const defaultWidthInsetPadding = 5;
     [labelShutterContainer addSubview:label];
     
     UIImage *caption = [UIImage imageWithView:labelShutterContainer];
-    NSData *labelData = UIImagePNGRepresentation(caption);
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
     
     dispatch_async(queue, ^{
+        NSData *uprightImageData;
+        if(imageOrientation != kCGImagePropertyOrientationUp) {
+            UIImage *uprightImage = [UIImage imageRedrawnUprightWithImage:[UIImage imageWithData:imageData]];
+            uprightImageData = UIImagePNGRepresentation(uprightImage);
+        } else {
+            uprightImageData = imageData;
+        }
+        
+        NSData *labelData = UIImagePNGRepresentation(caption);
+        
         MagickWand *base = NewMagickWand();
-        MagickReadImageBlob(base, [imageData bytes], [imageData length]);
+        MagickReadImageBlob(base, [uprightImageData bytes], [uprightImageData length]);
         
         BOOL isGif = MagickGetNumberImages(base) > 1;
         

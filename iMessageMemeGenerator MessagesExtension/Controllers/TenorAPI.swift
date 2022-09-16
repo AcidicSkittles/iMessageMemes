@@ -24,8 +24,9 @@ class TenorAPI: NSObject {
     static let trendingURL = "\(baseURL)trending?\(defaultParams)"
     static let registerURL = "\(baseURL)registershare?key=\(APIKey)"
     
-    static func search(_ searchText: String, nextPagePositionId: String?, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
-        let nextQueryString = (nextPagePositionId != "0") ? "&pos=\(nextPagePositionId!)" : ""
+    static func search(_ searchText: String?, nextPagePositionId: String, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
+        let searchText = searchText ?? ""
+        let nextQueryString = (nextPagePositionId != "0") ? "&pos=\(nextPagePositionId)" : ""
         let escapedNextString = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         var searchUrl = "\(TenorAPI.searchURL)&q=\(escapedNextString)"
         

@@ -21,3 +21,6 @@
 "SEARCH_TENOR" = "Search Tenor...";
 "CHOOSE_MEME" = "Step 1 of 2: Choose Something to Meme";
 "LOADING" = "Loading...";
+"ENABLE_PHOTOS" = "You must enable photo album access under Settings ➡️ Privacy ➡️ Photos";
+"ENABLE_CAMERA" = "You must enable camera access under Settings ➡️ Privacy ➡️ Camera";
+"DOWNLOAD_ERROR" = "Unable to download";

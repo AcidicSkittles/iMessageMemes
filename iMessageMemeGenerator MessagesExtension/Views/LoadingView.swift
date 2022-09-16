@@ -13,6 +13,8 @@ public protocol LoadableView: AnyObject {
     var loadingView: LoadingView { get set }
 }
 
+
+/// iMessage extensions do not have a "keyWindow" like traditional apps, so we will create a barebones loading view
 public class LoadingView: UIView {
 
     @IBOutlet weak var imageView: FLAnimatedImageView! {
@@ -36,8 +38,6 @@ public class LoadingView: UIView {
 
 extension LoadableView where Self: UIViewController {
     func setupLoadingView() {
-        // iMessage extensions do not have a "keyWindow" like traditional apps
-        // so we will create a barebones loading view
         self.loadingView.frame = self.view.bounds
         self.loadingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.loadingView.isHidden = true

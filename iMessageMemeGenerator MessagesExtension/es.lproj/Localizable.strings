@@ -21,3 +21,6 @@
 "SEARCH_TENOR" = "Buscar Tenor...";
 "CHOOSE_MEME" = "Paso 1 de 2: Elige Algo para Crear un Meme";
 "LOADING" = "Cargando...";
+"ENABLE_PHOTOS" = "Debe habilitar el acceso al álbum de fotos en Configuración ➡️ Privacidad ➡️ Fotos";
+"ENABLE_CAMERA" = "Debe habilitar el acceso a la cámara en Configuración ➡️ Privacidad ➡️ Cámara";
+"DOWNLOAD_ERROR" = "No se puede descargar";
