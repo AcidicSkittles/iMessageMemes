@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="240" height="430"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search Tenor" translatesAutoresizingMaskIntoConstraints="NO" id="jvu-Mk-H3f">
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="jvu-Mk-H3f">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
@@ -141,11 +141,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1 of 2: Choose Something to Meme" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="QeU-eL-lXu">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="QeU-eL-lXu">
                                 <rect key="frame" x="0.0" y="44" width="320" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="xibLocalizationKey" value="CHOOSE_MEME"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BFJ-mv-Ecf" customClass="MASegmentedControl" customModule="MASegmentedControl">
                                 <rect key="frame" x="0.0" y="62" width="320" height="32"/>

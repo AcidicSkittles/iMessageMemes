@@ -7,4 +7,17 @@
 */
 
 "ADD_CAPTION" = "Add Caption!";
+"ADD_TOP_CAPTION" = "Add Top Caption";
 "UNSUPPORTED_FILE" = "Unsupported file type.";
+"MAX_INPUT_ERROR" = "Please keep your memes less than %d characters. We make memes here, not book reports! Your meme was %d in length 🤪";
+"CAMERA_ROLL" = "Camera Roll";
+"TAP_TO_CHANGE" = "Tap here to change";
+"CANCEL" = "Cancel";
+"DONE" = "Done";
+"NO_ALBUMS" = "No albums";
+"SELECT" = "Select";
+"DESELECT" = "Deselect";
+"PHOTOS" = "Photos";
+"SEARCH_TENOR" = "Search Tenor...";
+"CHOOSE_MEME" = "Step 1 of 2: Choose Something to Meme";
+"LOADING" = "Loading...";

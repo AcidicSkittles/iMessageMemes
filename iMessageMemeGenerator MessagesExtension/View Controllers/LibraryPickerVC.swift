@@ -23,6 +23,13 @@ class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControlle
         configure.minimumInteritemSpacing = LayoutSettings.spacing
         configure.allowedAlbumCloudShared = true
         configure.singleSelectedMode = true
+        configure.customLocalizedTitle = ["CAMERA_ROLL".localized : "CAMERA_ROLL".localized]
+        configure.tapHereToChange = "TAP_TO_CHANGE".localized
+        configure.cancelTitle = "CANCEL".localized
+        configure.doneTitle = "DONE".localized
+        configure.emptyMessage = "NO_ALBUMS".localized
+        configure.selectMessage = "SELECT".localized
+        configure.deselectMessage = "DESELECT".localized
         self.configure = configure
         self.delegate = self
         self.eventDelegate = self

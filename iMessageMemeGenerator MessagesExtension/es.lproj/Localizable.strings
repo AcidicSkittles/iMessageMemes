@@ -7,4 +7,17 @@
 */
 
 "ADD_CAPTION" = "¡Añadir un subtitulo!";
+"ADD_TOP_CAPTION" = "Agregar Título Superior";
 "UNSUPPORTED_FILE" = "Tipo de archivo no soportado.";
+"MAX_INPUT_ERROR" = "Mantenga sus memes a menos de %d caracteres. ¡Aquí hacemos memes, no informes de libros! Tu meme tenía una longitud de %d 🤪";
+"CAMERA_ROLL" = "Rollo de la Cámara";
+"TAP_TO_CHANGE" = "Toque aquí para cambiar";
+"CANCEL" = "Cancelar";
+"DONE" = "Hecho";
+"NO_ALBUMS" = "Sin álbumes";
+"SELECT" = "Seleccione";
+"DESELECT" = "Deseleccionar";
+"PHOTOS" = "Fotos";
+"SEARCH_TENOR" = "Buscar Tenor...";
+"CHOOSE_MEME" = "Paso 1 de 2: Elige Algo para Crear un Meme";
+"LOADING" = "Cargando...";

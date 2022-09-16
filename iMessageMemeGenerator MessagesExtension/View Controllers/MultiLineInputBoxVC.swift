@@ -43,7 +43,7 @@ class MultiLineInputBoxVC: UIViewController {
         self.view.backgroundColor = .white
         
         let navBar = UINavigationBar(frame: .zero)
-        let navigationItem = UINavigationItem(title: "Add Top Caption")
+        let navigationItem = UINavigationItem(title: "ADD_TOP_CAPTION".localized)
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(close))
         navBar.setItems([navigationItem], animated: false)
         self.view.addSubview(navBar)
@@ -58,7 +58,7 @@ class MultiLineInputBoxVC: UIViewController {
         self.submitButton.tintColor = .white
         self.submitButton.backgroundColor = UIColor(red: 0, green: 128.0/255.0, blue: 252.0/255.0, alpha: 1)
         self.submitButton.titleLabel?.textAlignment = .center
-        self.submitButton.setTitle("Add Caption!", for: .normal)
+        self.submitButton.setTitle("ADD_CAPTION".localized, for: .normal)
         
         self.submitButton.snp.makeConstraints { make in
             make.height.equalTo(44)
@@ -87,7 +87,7 @@ class MultiLineInputBoxVC: UIViewController {
     @objc func submitPressed() {
         
         guard self.textView.text.count < self.maxInputTextLength else {
-            self.show(alert: "Please keep your memes less than \(self.maxInputTextLength) characters. We make memes here, not book reports! Your meme was \(self.textView.text.count) in length 🤪")
+            self.show(alert: "MAX_INPUT_ERROR".localized(self.maxInputTextLength, self.textView.text.count))
             return
         }
         

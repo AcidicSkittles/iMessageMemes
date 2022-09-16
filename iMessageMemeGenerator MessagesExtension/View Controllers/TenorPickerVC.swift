@@ -31,6 +31,7 @@ class TenorPickerVC: UIViewController, LoadableView {
         self.collectionView.dataSource = self
         self.refresh()
         
+        self.searchBar.searchTextField.placeholder = "SEARCH_TENOR".localized
         self.searchBar.delegate = self
         self.searchBar.searchTextField.delegate = self
         

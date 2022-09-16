@@ -23,7 +23,7 @@ class MessagesViewController: MSMessagesAppViewController {
             self.segmentedControl.fillEqually = true
             self.segmentedControl.roundedControl = true
 
-            self.segmentedControl.setSegmentedWith(items: ["Photos", "Tenor"])
+            self.segmentedControl.setSegmentedWith(items: ["PHOTOS".localized, "Tenor"])
             self.segmentedControl.padding = 2
             self.segmentedControl.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
             self.segmentedControl.selectedTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -107,7 +107,9 @@ class MessagesViewController: MSMessagesAppViewController {
         self.requestPresentationStyle(.compact)
         
         conversation.insertAttachment(mediaURL, withAlternateFilename: nil) { error in
-            print("Insert attachment message error: \(String(describing: error))")
+            if let error = error {
+                self.show(alert: error.localizedDescription)
+            }
         }
     }
 }
