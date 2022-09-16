@@ -53,8 +53,9 @@ class LibraryPickerVC: TLPhotosPickerViewController, TLPhotosPickerViewControlle
 extension LibraryPickerVC {
     func caption(asset: TLPHAsset) {
         guard !MessagesViewController.shared.isTransitioning, let phAsset: PHAsset = asset.phAsset else { return }
-            
-        if asset.type == .photo || asset.type == .livePhoto {
+        
+        switch asset.type {
+        case .photo, .livePhoto:
             let options: PHImageRequestOptions = PHImageRequestOptions()
             options.version = .current
             options.isNetworkAccessAllowed = true
@@ -109,7 +110,7 @@ extension LibraryPickerVC {
                     }
                 }
             }
-        } else if asset.type == .video {
+        case .video:
             let options: PHVideoRequestOptions = PHVideoRequestOptions()
             options.version = .current
             options.isNetworkAccessAllowed = true
@@ -165,9 +166,6 @@ extension LibraryPickerVC {
                     }
                 }
             }
-        } else {
-            self.loadingView.isHidden = true
-            self.show(alert: "UNSUPPORTED_FILE".localized)
         }
     }
 }

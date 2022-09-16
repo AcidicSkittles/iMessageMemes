@@ -86,7 +86,7 @@ class MultiLineInputBoxVC: UIViewController {
     
     @objc func submitPressed() {
         
-        if self.textView.text.count > self.maxInputTextLength {
+        guard self.textView.text.count < self.maxInputTextLength else {
             self.show(alert: "Please keep your memes less than \(self.maxInputTextLength) characters. We make memes here, not book reports! Your meme was \(self.textView.text.count) in length 🤪")
             return
         }

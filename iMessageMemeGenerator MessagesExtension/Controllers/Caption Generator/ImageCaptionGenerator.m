@@ -20,6 +20,7 @@
  */
 static double const OPTIMIZED_GIF_TRANSPARENCY_FUZZ = 12;
 static double const DEFAULT_MIN_OUTPUT_WIDTH = 480;
+static double const defaultWidthInsetPadding = 5;
 
 - (void)generateCaption:(NSString*)text toImageData:(NSData*)imageData {
     [self generateCaption:text toImageData:imageData withMinOutputResolution:DEFAULT_MIN_OUTPUT_WIDTH];
@@ -33,8 +34,7 @@ static double const DEFAULT_MIN_OUTPUT_WIDTH = 480;
     
     int maxLabelWidth = MAX(imageWidth.intValue, desiredMinWidth);
     
-    const float defaultInnerXPadding = 5;
-    int innerXPadding = (int)((float)defaultInnerXPadding * (float)desiredMinWidth/(float)DEFAULT_MIN_OUTPUT_WIDTH);
+    int innerXPadding = (int)((float)defaultWidthInsetPadding * (float)desiredMinWidth/(float)DEFAULT_MIN_OUTPUT_WIDTH);
     UILabel *label = [MemeLabelMaker captionedLabelWithText:text insetXSpacing:innerXPadding mediaWidth:maxLabelWidth];
     
     int innerYPadding = label.font.pointSize;

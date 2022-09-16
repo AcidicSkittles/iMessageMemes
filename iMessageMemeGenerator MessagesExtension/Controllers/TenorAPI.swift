@@ -16,24 +16,24 @@ class TenorAPI: NSObject {
     static let shared = TenorAPI()
 
     fileprivate static let APIKey = "LIVDSRZULELA"
-    fileprivate static let limit = 20
+    fileprivate static let resultsLimit = 20
     fileprivate static let baseURL = "https://api.tenor.com/v1/"
-    fileprivate static let defaultParams = "key=\(APIKey)&contentfilter=off&media_filter=minimal&limit=\(limit)"
+    fileprivate static let defaultParams = "key=\(APIKey)&contentfilter=off&media_filter=minimal&limit=\(resultsLimit)"
     
     static let searchURL = "\(baseURL)search?\(defaultParams)"
     static let trendingURL = "\(baseURL)trending?\(defaultParams)"
     static let registerURL = "\(baseURL)registershare?key=\(APIKey)"
     
-    static func search(_ searchText: String, next: String?, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
-        let nextStr = (next != "0") ? "&pos=\(next!)" : ""
-        let escapedString = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-        var searchUrl = "\(TenorAPI.searchURL)&q=\(escapedString)"
+    static func search(_ searchText: String, nextPagePositionId: String?, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
+        let nextQueryString = (nextPagePositionId != "0") ? "&pos=\(nextPagePositionId!)" : ""
+        let escapedNextString = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        var searchUrl = "\(TenorAPI.searchURL)&q=\(escapedNextString)"
         
-        if escapedString.isEmpty {
+        if escapedNextString.isEmpty {
             searchUrl = TenorAPI.trendingURL
         }
         
-        if let url = URL(string: "\(searchUrl)\(nextStr)") {
+        if let url = URL(string: "\(searchUrl)\(nextQueryString)") {
             Alamofire.request(url).responseTenorModel { response in
                 if let model = response.result.value {
                     completion(model, nil)

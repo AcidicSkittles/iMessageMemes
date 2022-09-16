@@ -12,6 +12,7 @@
 @implementation VideoCaptionGenerator
 
 static double const DEFAULT_MIN_OUTPUT_WIDTH = 640;
+static double const defaultWidthInsetPadding = 12;
 
 - (void)generateCaption:(NSString*)text toVideoAtPath:(NSURL*)videoPath {
     [self generateCaption:text toVideoAtPath:videoPath withMinOutputResolution:DEFAULT_MIN_OUTPUT_WIDTH];
@@ -61,8 +62,7 @@ static double const DEFAULT_MIN_OUTPUT_WIDTH = 640;
     if(videoSize.width < desiredMinWidth)
         videoSize = CGSizeMake(desiredMinWidth, videoSize.height * ((CGFloat)desiredMinWidth/(CGFloat)videoSize.width));
     
-    const float defaultInnerXPadding = 12;
-    int innerXPadding = (int)((float)defaultInnerXPadding * (float)desiredMinWidth/(float)DEFAULT_MIN_OUTPUT_WIDTH);
+    int innerXPadding = (int)((float)defaultWidthInsetPadding * (float)desiredMinWidth/(float)DEFAULT_MIN_OUTPUT_WIDTH);
     UILabel *label = [MemeLabelMaker captionedLabelWithText:text insetXSpacing:innerXPadding mediaWidth:videoSize.width];
     
     int innerYPadding = label.font.pointSize;

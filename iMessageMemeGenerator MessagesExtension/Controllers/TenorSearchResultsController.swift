@@ -8,53 +8,53 @@
 import Foundation
 
 class TenorSearchResultsController: NSObject {
-    var next: String?
-    var searchResults = [TenorGifModel]()
-    var isLoading = false
-    var searchStr = ""
+    private var nextPagePositionId: String?
+    var searchResults: [TenorGifModel] = []
+    var isLoading: Bool = false
+    var searchText: String = ""
     
     func search(_ searchText: String, completion: @escaping ((Error?) -> Void)) {
-        isLoading = true
-        searchStr = searchText
-        next = nil
-        TenorAPI.search(searchText, next: "0") { (tenorSearchResults, error) in
+        self.isLoading = true
+        self.searchText = searchText
+        self.nextPagePositionId = nil
+        TenorAPI.search(searchText, nextPagePositionId: "0") { (tenorSearchResults, error) in
             self.isLoading = false
             guard let tenorSearchResults = tenorSearchResults else {
                 completion(error)
                 return
             }
             
-            self.next = tenorSearchResults.next
+            self.nextPagePositionId = tenorSearchResults.next
             self.searchResults = tenorSearchResults.results ?? []
             completion(nil)
         }
     }
     
-    func loadPage(_ next: String?, completion: @escaping ((Error?) -> Void)) {
-        isLoading = true
+    func loadPage(_ nextPagePositionId: String?, completion: @escaping ((Error?) -> Void)) {
+        self.isLoading = true
         
-        TenorAPI.search(searchStr, next: next) { (tenorSearchResults, error) in
+        TenorAPI.search(self.searchText, nextPagePositionId: nextPagePositionId) { (tenorSearchResults, error) in
             self.isLoading = false
             guard let tenorSearchResults = tenorSearchResults else {
                 completion(error)
                 return
             }
             
-            self.next = tenorSearchResults.next
+            self.nextPagePositionId = tenorSearchResults.next
             self.searchResults.append(contentsOf: tenorSearchResults.results ?? [])
             completion(nil)
         }
     }
     
     func loadNextPage(completion: @escaping ((Error?) -> Void)) {
-        if let nextVal = next, nextVal != "0" {
-            loadPage(nextVal, completion: completion)
+        if let nextPagePositionId = self.nextPagePositionId, nextPagePositionId != "0" {
+            self.loadPage(nextPagePositionId, completion: completion)
         }
     }
     
     func shouldLoadNextPage(_ currentItemIndex: Int) -> Bool {
-
-        if !isLoading && currentItemIndex > (searchResults.count-10) {
+        let loadOffsetRows = 3
+        if !self.isLoading && currentItemIndex > (self.searchResults.count - LayoutSettings.itemsPerRow * loadOffsetRows) {
             return true
         } else {
             return false
