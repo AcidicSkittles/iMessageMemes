@@ -84,11 +84,10 @@ ImageFormatExtension const PNG = @"png";
             ssize_t x, y;
             size_t w, h;
             MagickGetImagePage(sourceImage, &w, &h, &x, &y);
-            int currentFrameDisposalMethod = MagickGetImageDispose(sourceImage);
-            NSLog(@"Frame: %i Disposal: %i Geometry: (x:%zi y:%zi w:%zu h:%zu)", i, currentFrameDisposalMethod, x, y, w, h);
+            DisposeType currentFrameDisposal = MagickGetImageDispose(sourceImage);
+            NSLog(@"Frame: %i Disposal: %i Geometry: (x:%zi y:%zi w:%zu h:%zu)", i, (int)currentFrameDisposal, x, y, w, h);
             
-            if(i == 0 || MagickGetImageDispose(sourceImage) == PreviousDispose ||
-               (previousFrameDisposal == BackgroundDispose && MagickGetImageDispose(sourceImage) == NoneDispose)) {
+            if(i == 0 || currentFrameDisposal == PreviousDispose || previousFrameDisposal == BackgroundDispose) {
                 
                 // add the memelabel to the working single frame wand
                 MagickReadImageBlob(singleFrameWand, [memeCaptionLabelData bytes], [memeCaptionLabelData length]);

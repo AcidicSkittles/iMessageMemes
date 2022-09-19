@@ -739,7 +739,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -767,9 +767,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket.iMessageExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator.MessagesExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto iMessage Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/iMessageMemeGenerator MessagesExtension/BridgingHeader.h";
@@ -788,7 +788,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -816,9 +816,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket.iMessageExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator.MessagesExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto iMessage Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/iMessageMemeGenerator MessagesExtension/BridgingHeader.h";
@@ -837,7 +837,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
@@ -853,9 +853,9 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -873,7 +873,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
@@ -889,9 +889,9 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

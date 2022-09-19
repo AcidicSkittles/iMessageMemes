@@ -106,7 +106,7 @@ extension TenorPickerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if self.searchRepository.shouldLoadNextPage(indexPath.item) {
+        if self.shouldLoadNextPage(indexPath.item) {
             self.searchRepository.loadNextPage { _ in
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -138,6 +138,16 @@ extension TenorPickerVC: UICollectionViewDelegate, UICollectionViewDataSource {
             }
         }
     }
+    
+    private func shouldLoadNextPage(_ currentItemIndex: Int) -> Bool {
+        let loadOffsetRows = 2
+        let gifCount = self.searchRepository.searchResults.count
+        if !self.searchRepository.isLoading && currentItemIndex > (gifCount - (LayoutSettings.itemsPerRow * loadOffsetRows)) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -159,7 +169,6 @@ extension TenorPickerVC: UICollectionViewDelegateFlowLayout {
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         self.collectionView.collectionViewLayout.invalidateLayout()
-        
     }
 }
 

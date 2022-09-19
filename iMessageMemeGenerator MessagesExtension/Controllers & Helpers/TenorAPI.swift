@@ -15,18 +15,18 @@ enum TenorApiError: Error {
 class TenorAPI: NSObject {
     static let shared = TenorAPI()
 
-    fileprivate static let APIKey = "LIVDSRZULELA"
-    fileprivate static let resultsLimit = 20
-    fileprivate static let baseURL = "https://api.tenor.com/v1/"
-    fileprivate static let defaultParams = "key=\(APIKey)&contentfilter=off&media_filter=minimal&limit=\(resultsLimit)"
+    private static let APIKey = "LIVDSRZULELA"
+    private static let resultsLimit = 20
+    private static let baseURL = "https://api.tenor.com/v1/"
+    private static let defaultParams = "key=\(APIKey)&contentfilter=off&media_filter=minimal&limit=\(resultsLimit)"
     
-    static let searchURL = "\(baseURL)search?\(defaultParams)"
-    static let trendingURL = "\(baseURL)trending?\(defaultParams)"
-    static let registerURL = "\(baseURL)registershare?key=\(APIKey)"
+    private static let searchURL = "\(baseURL)search?\(defaultParams)"
+    private static let trendingURL = "\(baseURL)trending?\(defaultParams)"
+    private static let registerURL = "\(baseURL)registershare?key=\(APIKey)"
     
-    static func search(_ searchText: String?, nextPagePositionId: String, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
+    static func search(_ searchText: String?, nextPagePositionId: String? = nil, completion: @escaping ((TenorSearchResultsModel?, Error?) -> Void)) {
         let searchText = searchText ?? ""
-        let nextQueryString = (nextPagePositionId != "0") ? "&pos=\(nextPagePositionId)" : ""
+        let nextQueryString = (nextPagePositionId != nil) ? "&pos=\(nextPagePositionId!)" : ""
         let escapedNextString = searchText.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         var searchUrl = "\(TenorAPI.searchURL)&q=\(escapedNextString)"
         
