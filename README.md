@@ -5,6 +5,8 @@ Here is an example:
 
 ![Example](demo.gif)
 
+Implement ```ImageMemeGeneratorProtocol``` or ```VideoMemeGeneratorProtocol``` and use ```ModernImageCaptionGenerator``` or ```ModernVideoCaptionGenerator``` as a guide to design your own memes.
+
 This demo makes notable use of: 
 
 * [ImageMagick](https://imagemagick.org/)
