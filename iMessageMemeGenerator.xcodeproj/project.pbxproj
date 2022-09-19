@@ -27,6 +27,7 @@
 		6525369828D40EFF001BC340 /* XIBLocalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369728D40EFF001BC340 /* XIBLocalizable.swift */; };
 		6525369E28D6802F001BC340 /* VideoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369D28D6802F001BC340 /* VideoHelpers.swift */; };
 		652536A428D7F234001BC340 /* ImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652536A328D7F234001BC340 /* ImageHelpers.swift */; };
+		652536A728D90AE9001BC340 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 652536A928D90AE9001BC340 /* InfoPlist.strings */; };
 		65D66E9C28BEAB7A00990404 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D66E9B28BEAB7A00990404 /* Assets.xcassets */; };
 		65D66EA228BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65D66EA128BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65D66EA728BEAB7A00990404 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D66EA628BEAB7A00990404 /* Messages.framework */; };
@@ -118,6 +119,8 @@
 		6525369C28D65866001BC340 /* VideoMemeGeneratorProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoMemeGeneratorProtocol.h; sourceTree = "<group>"; };
 		6525369D28D6802F001BC340 /* VideoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHelpers.swift; sourceTree = "<group>"; };
 		652536A328D7F234001BC340 /* ImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelpers.swift; sourceTree = "<group>"; };
+		652536A828D90AE9001BC340 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		652536AA28D90AEC001BC340 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		65D66E9828BEAB7800990404 /* iMessageMemeGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMessageMemeGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D66E9B28BEAB7A00990404 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65D66EA128BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "iMessageMemeGenerator MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -278,6 +281,7 @@
 			children = (
 				65D66E9B28BEAB7A00990404 /* Assets.xcassets */,
 				6525364F28C01157001BC340 /* Info.plist */,
+				652536A928D90AE9001BC340 /* InfoPlist.strings */,
 			);
 			path = iMessageMemeGenerator;
 			sourceTree = "<group>";
@@ -443,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D66E9C28BEAB7A00990404 /* Assets.xcassets in Resources */,
+				652536A728D90AE9001BC340 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +605,15 @@
 				6525367728C29784001BC340 /* es */,
 			);
 			name = LoadingView.xib;
+			sourceTree = "<group>";
+		};
+		652536A928D90AE9001BC340 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				652536A828D90AE9001BC340 /* en */,
+				652536AA28D90AEC001BC340 /* es */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		65D66EAB28BEAB7A00990404 /* MainInterface.storyboard */ = {
@@ -840,9 +854,6 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used to access microphone while recording video to be imported into the app for editing and caption making.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -876,9 +887,6 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used to access microphone while recording video to be imported into the app for editing and caption making.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

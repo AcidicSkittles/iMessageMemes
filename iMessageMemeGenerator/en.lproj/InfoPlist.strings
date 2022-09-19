@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  iMessageMemeGenerator
+
+  Created by Derek Buchanan on 9/19/22.
+  
+*/
+NSMicrophoneUsageDescription = "Used to access microphone while recording video to be imported into the app for editing and caption making.";
+NSPhotoLibraryUsageDescription = "We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.";
+NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";

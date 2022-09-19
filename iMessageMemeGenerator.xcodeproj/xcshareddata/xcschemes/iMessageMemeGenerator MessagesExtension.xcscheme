@@ -85,16 +85,26 @@
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "1"
+         BundleIdentifier = "com.apple.MobileSMS">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "65D66E9728BEAB7800990404"
-            BuildableName = "iMessageMemeGenerator.app"
-            BlueprintName = "iMessageMemeGenerator"
+            BlueprintIdentifier = "65D66EA028BEAB7A00990404"
+            BuildableName = "iMessageMemeGenerator MessagesExtension.appex"
+            BlueprintName = "iMessageMemeGenerator MessagesExtension"
             ReferencedContainer = "container:iMessageMemeGenerator.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "65D66EA028BEAB7A00990404"
+            BuildableName = "iMessageMemeGenerator MessagesExtension.appex"
+            BlueprintName = "iMessageMemeGenerator MessagesExtension"
+            ReferencedContainer = "container:iMessageMemeGenerator.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

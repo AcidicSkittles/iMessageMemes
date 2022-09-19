@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  iMessageMemeGenerator
+
+  Created by Derek Buchanan on 9/19/22.
+  
+*/
+NSMicrophoneUsageDescription = "Se utiliza para acceder al micrófono mientras se graba un video para importarlo a la aplicación para editarlo y crear subtítulos.";
+NSPhotoLibraryUsageDescription = "Necesitamos este permiso para poder guardar imágenes en el carrete de la cámara. Este permiso también se usa al importar fotos a la aplicación.";
+NSCameraUsageDescription = "Se utiliza para tomar fotos/grabar videos para importarlos a la aplicación para editarlos o publicarlos si así lo desea.";
