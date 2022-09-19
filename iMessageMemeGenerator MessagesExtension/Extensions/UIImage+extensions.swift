@@ -10,11 +10,11 @@ import UIKit
 
 @objc extension UIImage {
     
-    /// Grabs a screenshot of a view in the form of an image
+    /// Grabs a screenshot of a view in the form of an image. Screen scale is ignored (scale of @1x).
     /// - Parameter view: the view to be screenshotted
     /// - Returns: image representation of the view
     class func image(view: UIView) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 1)
         view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

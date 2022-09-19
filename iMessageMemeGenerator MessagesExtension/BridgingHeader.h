@@ -2,5 +2,5 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import "ImageCaptionGenerator.h"
-#import "VideoCaptionGenerator.h"
+#import "ModernImageCaptionGenerator.h"
+#import "ModernVideoCaptionGenerator.h"

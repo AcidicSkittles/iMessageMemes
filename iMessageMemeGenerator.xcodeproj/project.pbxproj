@@ -19,12 +19,14 @@
 		6525367128C29635001BC340 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525367028C29635001BC340 /* String+extensions.swift */; };
 		6525367228C2974B001BC340 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6525367428C2974B001BC340 /* LoadingView.xib */; };
 		6525367A28CF9434001BC340 /* LayoutSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525367928CF9167001BC340 /* LayoutSettings.swift */; };
-		6525368428D37D5E001BC340 /* ImageCaptionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6525368328D37D5E001BC340 /* ImageCaptionGenerator.m */; };
-		6525368728D3851A001BC340 /* MemeLabelMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525368628D3851A001BC340 /* MemeLabelMaker.swift */; };
-		6525368A28D39447001BC340 /* VideoCaptionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6525368928D39447001BC340 /* VideoCaptionGenerator.m */; };
+		6525368428D37D5E001BC340 /* ModernImageCaptionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6525368328D37D5E001BC340 /* ModernImageCaptionGenerator.m */; };
+		6525368728D3851A001BC340 /* ModernMemeLabelMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525368628D3851A001BC340 /* ModernMemeLabelMaker.swift */; };
+		6525368A28D39447001BC340 /* ModernVideoCaptionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6525368928D39447001BC340 /* ModernVideoCaptionGenerator.m */; };
 		6525369428D40E57001BC340 /* UILabel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369328D40E57001BC340 /* UILabel+extensions.swift */; };
 		6525369628D40E67001BC340 /* UIButton+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369528D40E67001BC340 /* UIButton+extensions.swift */; };
 		6525369828D40EFF001BC340 /* XIBLocalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369728D40EFF001BC340 /* XIBLocalizable.swift */; };
+		6525369E28D6802F001BC340 /* VideoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525369D28D6802F001BC340 /* VideoHelpers.swift */; };
+		652536A428D7F234001BC340 /* ImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652536A328D7F234001BC340 /* ImageHelpers.swift */; };
 		65D66E9C28BEAB7A00990404 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D66E9B28BEAB7A00990404 /* Assets.xcassets */; };
 		65D66EA228BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65D66EA128BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65D66EA728BEAB7A00990404 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D66EA628BEAB7A00990404 /* Messages.framework */; };
@@ -103,15 +105,19 @@
 		6525367528C2975E001BC340 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoadingView.xib; sourceTree = "<group>"; };
 		6525367728C29784001BC340 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LoadingView.strings; sourceTree = "<group>"; };
 		6525367928CF9167001BC340 /* LayoutSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSettings.swift; sourceTree = "<group>"; };
-		6525368228D37D5E001BC340 /* ImageCaptionGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCaptionGenerator.h; sourceTree = "<group>"; };
-		6525368328D37D5E001BC340 /* ImageCaptionGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCaptionGenerator.m; sourceTree = "<group>"; };
+		6525368228D37D5E001BC340 /* ModernImageCaptionGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModernImageCaptionGenerator.h; sourceTree = "<group>"; };
+		6525368328D37D5E001BC340 /* ModernImageCaptionGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModernImageCaptionGenerator.m; sourceTree = "<group>"; };
 		6525368528D3815A001BC340 /* CaptionGeneratorDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptionGeneratorDelegate.h; sourceTree = "<group>"; };
-		6525368628D3851A001BC340 /* MemeLabelMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeLabelMaker.swift; sourceTree = "<group>"; };
-		6525368828D39447001BC340 /* VideoCaptionGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCaptionGenerator.h; sourceTree = "<group>"; };
-		6525368928D39447001BC340 /* VideoCaptionGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoCaptionGenerator.m; sourceTree = "<group>"; };
+		6525368628D3851A001BC340 /* ModernMemeLabelMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernMemeLabelMaker.swift; sourceTree = "<group>"; };
+		6525368828D39447001BC340 /* ModernVideoCaptionGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModernVideoCaptionGenerator.h; sourceTree = "<group>"; };
+		6525368928D39447001BC340 /* ModernVideoCaptionGenerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModernVideoCaptionGenerator.m; sourceTree = "<group>"; };
 		6525369328D40E57001BC340 /* UILabel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extensions.swift"; sourceTree = "<group>"; };
 		6525369528D40E67001BC340 /* UIButton+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extensions.swift"; sourceTree = "<group>"; };
 		6525369728D40EFF001BC340 /* XIBLocalizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XIBLocalizable.swift; sourceTree = "<group>"; };
+		6525369B28D65859001BC340 /* ImageMemeGeneratorProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageMemeGeneratorProtocol.h; sourceTree = "<group>"; };
+		6525369C28D65866001BC340 /* VideoMemeGeneratorProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoMemeGeneratorProtocol.h; sourceTree = "<group>"; };
+		6525369D28D6802F001BC340 /* VideoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHelpers.swift; sourceTree = "<group>"; };
+		652536A328D7F234001BC340 /* ImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelpers.swift; sourceTree = "<group>"; };
 		65D66E9828BEAB7800990404 /* iMessageMemeGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMessageMemeGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D66E9B28BEAB7A00990404 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65D66EA128BEAB7A00990404 /* iMessageMemeGenerator MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "iMessageMemeGenerator MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,14 +201,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		6525366328C13E39001BC340 /* Controllers */ = {
+		6525366328C13E39001BC340 /* Controllers & Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				6525366728C13F51001BC340 /* TenorAPI.swift */,
 				6525367928CF9167001BC340 /* LayoutSettings.swift */,
-				6525368B28D3AD4A001BC340 /* Caption Generator */,
+				652536A328D7F234001BC340 /* ImageHelpers.swift */,
+				6525369D28D6802F001BC340 /* VideoHelpers.swift */,
+				6525368B28D3AD4A001BC340 /* Modern Caption Generator */,
 			);
-			path = Controllers;
+			path = "Controllers & Helpers";
 			sourceTree = "<group>";
 		};
 		6525366428C13E52001BC340 /* Images */ = {
@@ -214,16 +222,16 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
-		6525368B28D3AD4A001BC340 /* Caption Generator */ = {
+		6525368B28D3AD4A001BC340 /* Modern Caption Generator */ = {
 			isa = PBXGroup;
 			children = (
-				6525368628D3851A001BC340 /* MemeLabelMaker.swift */,
-				6525368228D37D5E001BC340 /* ImageCaptionGenerator.h */,
-				6525368328D37D5E001BC340 /* ImageCaptionGenerator.m */,
-				6525368828D39447001BC340 /* VideoCaptionGenerator.h */,
-				6525368928D39447001BC340 /* VideoCaptionGenerator.m */,
+				6525368628D3851A001BC340 /* ModernMemeLabelMaker.swift */,
+				6525368228D37D5E001BC340 /* ModernImageCaptionGenerator.h */,
+				6525368328D37D5E001BC340 /* ModernImageCaptionGenerator.m */,
+				6525368828D39447001BC340 /* ModernVideoCaptionGenerator.h */,
+				6525368928D39447001BC340 /* ModernVideoCaptionGenerator.m */,
 			);
-			path = "Caption Generator";
+			path = "Modern Caption Generator";
 			sourceTree = "<group>";
 		};
 		6525368C28D40C36001BC340 /* Protocols & Interfaces */ = {
@@ -231,6 +239,8 @@
 			children = (
 				6525368528D3815A001BC340 /* CaptionGeneratorDelegate.h */,
 				6525369728D40EFF001BC340 /* XIBLocalizable.swift */,
+				6525369B28D65859001BC340 /* ImageMemeGeneratorProtocol.h */,
+				6525369C28D65866001BC340 /* VideoMemeGeneratorProtocol.h */,
 			);
 			path = "Protocols & Interfaces";
 			sourceTree = "<group>";
@@ -296,7 +306,7 @@
 			children = (
 				6525369A28D50D62001BC340 /* Data Repository */,
 				6525368C28D40C36001BC340 /* Protocols & Interfaces */,
-				6525366328C13E39001BC340 /* Controllers */,
+				6525366328C13E39001BC340 /* Controllers & Helpers */,
 				65D675F928BFDD9800990404 /* Extensions */,
 				6525365A28C0FB01001BC340 /* Models */,
 				6525365528C0F794001BC340 /* Views */,
@@ -538,15 +548,16 @@
 			files = (
 				6525365C28C0FCCE001BC340 /* TenorSearchResultsModel.swift in Sources */,
 				6525365E28C0FCDE001BC340 /* TenorMediaModel.swift in Sources */,
-				6525368A28D39447001BC340 /* VideoCaptionGenerator.m in Sources */,
+				6525368A28D39447001BC340 /* ModernVideoCaptionGenerator.m in Sources */,
 				65D675F828BFDD8300990404 /* UIView+extensions.swift in Sources */,
 				65D66EFC28BEBABD00990404 /* LoadingView.swift in Sources */,
 				6525367128C29635001BC340 /* String+extensions.swift in Sources */,
 				65D66EAA28BEAB7A00990404 /* MessagesViewController.swift in Sources */,
 				6525366828C13F51001BC340 /* TenorAPI.swift in Sources */,
-				6525368428D37D5E001BC340 /* ImageCaptionGenerator.m in Sources */,
+				6525368428D37D5E001BC340 /* ModernImageCaptionGenerator.m in Sources */,
 				6525367A28CF9434001BC340 /* LayoutSettings.swift in Sources */,
 				6525366228C1252A001BC340 /* UIViewController+extensions.swift in Sources */,
+				652536A428D7F234001BC340 /* ImageHelpers.swift in Sources */,
 				6525369428D40E57001BC340 /* UILabel+extensions.swift in Sources */,
 				65D675F528BFDC2200990404 /* MultiLineInputBoxVC.swift in Sources */,
 				6525369628D40E67001BC340 /* UIButton+extensions.swift in Sources */,
@@ -557,7 +568,8 @@
 				6525365728C0FAB9001BC340 /* TenorCollectionViewCell.swift in Sources */,
 				65D675F328BFD42B00990404 /* LibraryPickerVC.swift in Sources */,
 				6525369828D40EFF001BC340 /* XIBLocalizable.swift in Sources */,
-				6525368728D3851A001BC340 /* MemeLabelMaker.swift in Sources */,
+				6525368728D3851A001BC340 /* ModernMemeLabelMaker.swift in Sources */,
+				6525369E28D6802F001BC340 /* VideoHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,8 +736,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -752,8 +767,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator.MessagesExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket.iMessageExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto iMessage Dev";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/iMessageMemeGenerator MessagesExtension/BridgingHeader.h";
@@ -769,8 +785,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S3ZG36DJG7;
+				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -797,8 +816,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator.MessagesExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket.iMessageExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto iMessage Dev";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/iMessageMemeGenerator MessagesExtension/BridgingHeader.h";
@@ -814,10 +834,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S3ZG36DJG7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used to access microphone while recording video to be imported into the app for editing and caption making.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -828,8 +853,9 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto Dev";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -844,10 +870,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S3ZG36DJG7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/iMessageMemeGenerator/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take pictures/record video to be imported into the app for editing or for posting if you choose to do so.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used to access microphone while recording video to be imported into the app for editing and caption making.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need this permission in order to be able to save images to your camera roll. This permission is also used when importing photos into the app.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -858,8 +889,9 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.iMessageMemeGenerator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voodoocoding.lolbucket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "MBP Picto Dev";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

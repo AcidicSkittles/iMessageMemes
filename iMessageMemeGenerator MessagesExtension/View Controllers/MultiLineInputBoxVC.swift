@@ -26,6 +26,7 @@ class MultiLineInputBoxVC: UIViewController {
     private var textView: UITextView!
     private var submitButton: UIButton!
     var maxInputTextLength: Int = 2048
+    var memeFontName: String = ModernMemeLabelMaker.defaultMemeFont
     
     convenience public init(withSelectionImageData imageData: Data) {
         self.init()
@@ -78,7 +79,7 @@ extension MultiLineInputBoxVC {
         }
         
         self.textView = UITextView(frame: self.view.bounds)
-        self.textView.font = UIFont(name: MemeLabelMaker.defaultMemeFont, size: 16)
+        self.textView.font = UIFont(name: self.memeFontName, size: 16)
         self.textView.autocapitalizationType = .sentences
         self.textView.autocorrectionType = .yes
         self.textView.inputAccessoryView = self.submitButton

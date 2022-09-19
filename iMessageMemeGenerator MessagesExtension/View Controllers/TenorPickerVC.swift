@@ -20,6 +20,7 @@ class TenorPickerVC: UIViewController, LoadableView {
     var loadingView: LoadingView = UIView.fromNib()
     private var becomeResponderAfterExpand: Bool = false
     private let searchRepository = TenorSearchResultsRepository()
+    var imageCaptionGenerator: ImageMemeGeneratorProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,9 +201,9 @@ extension TenorPickerVC: MultiLineInputBoxDelegate {
     func add(text: String, toImageData imageData: Data) {
         self.loadingView.isHidden = false
         
-        let captionGenerator: ImageCaptionGenerator = ImageCaptionGenerator()
-        captionGenerator.delegate = self
-        captionGenerator.generateCaption(text, toImageData: imageData)
+        self.imageCaptionGenerator = ModernImageCaptionGenerator()
+        self.imageCaptionGenerator?.delegate = self
+        self.imageCaptionGenerator?.generateCaption(text, toImageData: imageData)
     }
 }
 

@@ -11,8 +11,9 @@ import PhotosUI
 import MobileCoreServices
 
 class LibraryPickerVC: TLPhotosPickerViewController, LoadableView {
-    
     var loadingView: LoadingView = UIView.fromNib()
+    var imageCaptionGenerator: ImageMemeGeneratorProtocol?
+    var videoCaptionGenerator: VideoMemeGeneratorProtocol?
     
     @objc override init() {
         super.init()
@@ -71,12 +72,13 @@ extension LibraryPickerVC {
                 self.selected(imageData: data)
             }
         case .video:
+            self.loadingView.isHidden = false
+            
             let options: PHVideoRequestOptions = PHVideoRequestOptions()
             options.version = .current
             options.isNetworkAccessAllowed = true
             options.progressHandler = { (progress, _, _, _) in
                 print("progressHandler progress \(progress)")
-                self.loadingView.isHidden = false
             }
             
             PHImageManager.default().requestAVAsset(forVideo: phAsset, options: options) { (avAsset: AVAsset?, _, _) in
@@ -84,19 +86,19 @@ extension LibraryPickerVC {
                     DispatchQueue.main.async {
                         self.selected(videoPath: urlAsset.url)
                     }
-                } else if let avCompositionAsset = avAsset as? AVComposition,
-                          let exporter = AVAssetExportSession(asset: avCompositionAsset, presetName: AVAssetExportPresetHighestQuality) {
-                    
-                    let outputType = AVFileType.mp4
-                    let mp4PathExtension = UTType(outputType.rawValue)!.preferredFilenameExtension!
-                    let outputPath = self.outputTempVideoPath(pathExtension: mp4PathExtension)
-                    exporter.outputURL = outputPath
-                    exporter.outputFileType = outputType
-                    exporter.shouldOptimizeForNetworkUse = true
+                } else if let avCompositionAsset = avAsset as? AVComposition {
                 
-                    exporter.exportAsynchronously {
+                    VideoHelpers.exportAsync(assetComposition: avCompositionAsset) { [unowned self] outputPath, error in
                         DispatchQueue.main.async {
-                            self.selected(videoPath: outputPath)
+                            self.loadingView.isHidden = true
+                            
+                            if let error = error {
+                                self.show(alert: error.localizedDescription)
+                            } else if let outputPath = outputPath {
+                                self.selected(videoPath: outputPath)
+                            } else {
+                                self.show(alert: "UNSUPPORTED_FILE".localized)
+                            }
                         }
                     }
                 } else {
@@ -164,20 +166,21 @@ extension LibraryPickerVC: TLPhotosPickerEventDelegate {
 
 // MARK: - MultiLineInputBoxDelegate
 extension LibraryPickerVC: MultiLineInputBoxDelegate {
+    
     func add(text: String, toImageData imageData: Data) {
         self.loadingView.isHidden = false
         
-        let captionGenerator: ImageCaptionGenerator = ImageCaptionGenerator()
-        captionGenerator.delegate = self
-        captionGenerator.generateCaption(text, toImageData: imageData)
+        self.imageCaptionGenerator = ModernImageCaptionGenerator()
+        self.imageCaptionGenerator?.delegate = self
+        self.imageCaptionGenerator?.generateCaption(text, toImageData: imageData)
     }
     
     func add(text: String, toVideoAtPath videoPath: URL) {
         self.loadingView.isHidden = false
         
-        let captionGenerator: VideoCaptionGenerator = VideoCaptionGenerator()
-        captionGenerator.delegate = self
-        captionGenerator.generateCaption(text, toVideoAtPath: videoPath)
+        self.videoCaptionGenerator = ModernVideoCaptionGenerator()
+        self.videoCaptionGenerator?.delegate = self
+        self.videoCaptionGenerator?.generateCaption(text, toVideoAtPath: videoPath)
     }
 }
 
